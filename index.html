@@ -19,29 +19,31 @@
       <h1>Self-Experiment&nbsp;1: The Serial Position Effect</h1>
 
       <div class="instructions">
-        <p>Welcome. This activity tests how well you remember a list of words.</p>
+        <p>This task measures memory for lists of words. Please read the instructions
+           before you begin.</p>
         <ul>
           <li>Words will appear on the screen <strong>one at a time</strong>. Study each
               word as it appears.</li>
-          <li><strong>Do not write anything down</strong> while the words are showing.</li>
-          <li>After each list, you will have <strong>90&nbsp;seconds</strong> to type every
-              word you can remember. Order does not matter.</li>
-          <li>You will do this <strong>three times</strong> with three different lists.</li>
-          <li>First you'll do <strong>one quick practice trial</strong> to get used to how
-              it works, then the real experiment begins.</li>
+          <li><strong>Do not write anything down</strong> while the words are being
+              presented.</li>
+          <li>After each list, you will have <strong>90&nbsp;seconds</strong> to type as
+              many words as you can recall. Order does not matter.</li>
+          <li>The experiment consists of <strong>three lists</strong> presented in
+              sequence.</li>
+          <li>It begins with <strong>one short practice trial</strong>, followed by the
+              three experimental trials.</li>
         </ul>
-        <p class="practice-tip">Everyone starts with a short <strong>practice
-           round</strong> so the warm-up is the same for all students. The practice
-           uses <strong>different words</strong> than the real experiment, so it won't
-           affect your results.</p>
-        <p>When you are ready, enter your name and begin the practice.</p>
+        <p class="practice-tip">All participants complete the same short practice trial
+           before the experiment begins. The practice uses a different set of words, so it
+           does not affect your results.</p>
+        <p>Enter your name below to begin the practice trial.</p>
       </div>
 
       <label class="field" for="participant">Your name</label>
       <input type="text" id="participant" autocomplete="off"
              placeholder="e.g. Jane O'Brien">
 
-      <button id="begin-btn" class="btn-primary">Begin practice</button>
+      <button id="begin-btn" class="btn-primary">Begin practice trial</button>
     </section>
 
     <!-- ===================================================================
@@ -62,9 +64,9 @@
          RECALL SCREEN  (90-second free recall, word by word)
          =================================================================== -->
     <section id="recall" class="screen hidden">
-      <h2>Type every word you remember</h2>
+      <h2>Type the words you recall</h2>
       <p class="recall-help">Type one word and press <strong>Enter</strong>. Order does not
-        matter. Don't worry about spelling — type it the way you remember it.</p>
+        matter. Spelling does not need to be exact; type each word as you remember it.</p>
 
       <div id="countdown" class="countdown" role="timer" aria-live="off">1:30</div>
 
@@ -83,22 +85,21 @@
          PRACTICE COMPLETE  (end of the optional dry run)
          =================================================================== -->
     <section id="practice-done" class="screen hidden">
-      <h2>Practice complete</h2>
-      <p>That's how the experiment works — words appear one at a time, then you
-         type everything you remember before the timer runs out.</p>
-      <p><strong>You're now moving on to the real trials.</strong> They begin with a
-         <strong>new set of words</strong> — this is the part that counts, so give it
-         your full attention.</p>
-      <button id="practice-done-btn" class="btn-primary">Begin the real experiment</button>
+      <h2>Practice trial complete</h2>
+      <p>You have finished the practice trial. In each list, words are presented one at a
+         time, and you then type the words you recall before the timer ends.</p>
+      <p>The experiment will now begin. It uses a new set of words and consists of three
+         trials. Please complete it carefully.</p>
+      <button id="practice-done-btn" class="btn-primary">Begin the experiment</button>
     </section>
 
     <!-- ===================================================================
          INTERSTITIAL  (rest between trials)
          =================================================================== -->
     <section id="interstitial" class="screen hidden">
-      <h2>Nice work — take a short rest</h2>
-      <p>When you're ready, continue to the next list. The next list of words will begin
-         right after you click below.</p>
+      <h2>Rest before the next list</h2>
+      <p>Take a brief rest. When you are ready, select Continue. Presentation of the next
+         list will begin immediately.</p>
       <button id="continue-btn" class="btn-primary">Continue</button>
     </section>
 
@@ -106,7 +107,7 @@
          RESULTS SCREEN  (DATA ONLY — no interpretation by design)
          =================================================================== -->
     <section id="results" class="screen hidden">
-      <h2>Your Results</h2>
+      <h2>Results</h2>
 
       <div class="chart-wrap">
         <canvas id="curve"></canvas>
@@ -132,8 +133,8 @@
 
       <div class="intrusions" id="intrusions"><!-- filled by results.js --></div>
 
-      <button id="download-btn" class="btn-primary">Download Excel (.xlsx)</button>
-      <p class="screenshot-note">You can also screenshot this screen for your write-up.</p>
+      <button id="download-btn" class="btn-primary">Download data (.xlsx)</button>
+      <p class="screenshot-note">You may also take a screenshot of this screen for your report.</p>
     </section>
 
   </main>

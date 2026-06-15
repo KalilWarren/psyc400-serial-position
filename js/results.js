@@ -204,12 +204,12 @@ var Results = (function () {
     });
 
     var html = '<h3>Intrusions</h3>' +
-      '<p class="explain"><em>An intrusion is a word you typed that was not on the list you ' +
-      'studied</em> — either a word that never appeared, or a list word spelled differently ' +
-      'enough that it did not match exactly. They are shown here so you can see exactly what ' +
-      'was and was not counted.</p>';
+      '<p class="explain">An intrusion is a recalled word that was not on the list you ' +
+      'studied. This includes words that were never presented and list words spelled ' +
+      'differently enough that they did not match exactly. They are listed below so that ' +
+      'you can see which responses were and were not counted.</p>';
     if (items.length === 0) {
-      html += '<p class="none">None — every word you typed matched a word on the lists.</p>';
+      html += '<p class="none">None. Every word you entered matched a word on the lists.</p>';
     } else {
       html += '<div class="chips">';
       items.forEach(function (it) {
@@ -254,7 +254,7 @@ var Results = (function () {
     rows.push(['App version', APP_VERSION, '']);
     rows.push(['Session start (ISO 8601)', session.startedISO, localDateTime(session.startedISO)]);
     rows.push([]);
-    rows.push(['Trial timing log (real trials only)']);
+    rows.push(['Trial timing log (experimental trials only)']);
     rows.push(['Trial', 'List', 'Words shown at (ISO)', 'Words shown at (local)',
                'Recall opened (ISO)', 'Recall opened (local)',
                'Recall closed (ISO)', 'Recall closed (local)']);
@@ -267,13 +267,13 @@ var Results = (function () {
       ]);
     });
     rows.push([]);
-    rows.push(['Note: Every student completed a required practice round before the real ' +
-               'trials. Its data is on the separate "Practice" tab and is NOT included in ' +
-               'the chart, the Scoring tab, or the Figure tab.']);
+    rows.push(['Note: All participants completed a required practice trial before the ' +
+               'experimental trials. Its data is on the separate "Practice" tab and is not ' +
+               'included in the chart, the Scoring tab, or the Figure tab.']);
     rows.push(['Note: The word lists for this session were drawn at random from the ' +
-               'study word bank, so they differ between students. The exact words shown ' +
-               'are recorded on the Scoring tab.']);
-    rows.push(['Note: "intrusion" = a recalled word that was not on the studied list ' +
+               'study word bank, so they differ between participants. The exact words ' +
+               'presented are recorded on the Scoring tab.']);
+    rows.push(['Note: An intrusion is a recalled word that was not on the presented list ' +
                '(a non-list word, or a list word spelled differently enough that it did ' +
                'not match exactly).']);
     return rows;
@@ -283,8 +283,8 @@ var Results = (function () {
   function practiceSheet(practice) {
     var s = scoreTrial(practice);
     var rows = [];
-    rows.push(['PRACTICE ROUND — warm-up only']);
-    rows.push(['This data is NOT part of the real experiment and is NOT in the chart or scoring.']);
+    rows.push(['PRACTICE TRIAL (warm-up only)']);
+    rows.push(['This data is not part of the experiment and is not included in the chart or scoring.']);
     rows.push([]);
     rows.push(['Words shown at (ISO)', practice.presentationStartISO || '', localDateTime(practice.presentationStartISO)]);
     rows.push(['Recall opened (ISO)', practice.recallStartISO || '', localDateTime(practice.recallStartISO)]);
