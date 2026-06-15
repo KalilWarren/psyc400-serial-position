@@ -1,0 +1,241 @@
+/* ============================================================================
+ * style.css — Serial Position Self-Experiment
+ * Verdana (dyslexia-friendly), USC garnet accents, high contrast, responsive.
+ * ========================================================================== */
+
+:root {
+  --garnet: #73000A;        /* USC garnet — headings, buttons, chart line, progress */
+  --garnet-dark: #520007;   /* pressed/hover state */
+  --ink: #1a1a1a;           /* body text */
+  --muted: #5c5c5c;         /* secondary text */
+  --line: #cfcfcf;          /* borders/dividers */
+  --bg: #ffffff;
+  --bg-soft: #f4f4f4;       /* neutral gray panels */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+/* --- Screens (only one visible at a time) ------------------------------- */
+.screen { animation: fade 0.2s ease-in; }
+.hidden { display: none !important; }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- Headings ----------------------------------------------------------- */
+h1, h2 {
+  color: var(--garnet);
+  line-height: 1.25;
+}
+h1 { font-size: 1.9rem; margin: 0.25rem 0 1rem; }
+h2 { font-size: 1.5rem; margin: 0.25rem 0 1rem; }
+
+/* --- Instruction block -------------------------------------------------- */
+.instructions {
+  background: var(--bg-soft);
+  border-left: 6px solid var(--garnet);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.instructions p { margin: 0.5rem 0; }
+.instructions ul { margin: 0.5rem 0; padding-left: 1.25rem; }
+.instructions li { margin: 0.4rem 0; }
+.instructions .practice-tip {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+/* --- Form fields -------------------------------------------------------- */
+.field {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.15rem;
+  padding: 0.75rem 0.9rem;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--garnet);
+}
+input[type="text"]:disabled {
+  background: var(--bg-soft);
+  color: var(--muted);
+}
+
+/* --- Buttons (large + tappable) ----------------------------------------- */
+.btn-primary {
+  display: inline-block;
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background: var(--garnet);
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem 1.25rem;
+  min-height: 56px;
+  cursor: pointer;
+}
+.btn-primary:hover { background: var(--garnet-dark); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:disabled { background: #9a9a9a; cursor: default; transform: none; }
+
+/* --- Presentation phase ------------------------------------------------- */
+.word-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+.word {
+  font-size: clamp(2.5rem, 12vw, 5rem);
+  font-weight: bold;
+  text-align: center;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--garnet);
+  /* Smooth fill that matches the per-word cadence. */
+  transition: width 0.25s linear;
+}
+
+/* --- Recall phase ------------------------------------------------------- */
+.recall-help { color: var(--muted); margin-top: 0; }
+
+.countdown {
+  font-size: 2.4rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--garnet);
+  margin: 0.5rem 0 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.countdown.low { color: #b00000; }
+
+.recall-count { color: var(--muted); margin: 0.25rem 0 0.5rem; }
+
+.recall-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+}
+.recall-list li {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 1rem;
+}
+
+/* --- Results phase ------------------------------------------------------ */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.summary {
+  background: var(--bg-soft);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.summary .stat { display: block; margin: 0.3rem 0; }
+.summary .stat strong { color: var(--garnet); }
+
+.table-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+
+#results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+#results-table th, #results-table td {
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.6rem;
+  text-align: center;
+}
+#results-table thead th {
+  background: var(--garnet);
+  color: #fff;
+}
+#results-table tbody tr:nth-child(even) { background: var(--bg-soft); }
+
+.intrusions {
+  background: var(--bg-soft);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.intrusions h3 { margin: 0 0 0.5rem; color: var(--garnet); font-size: 1.1rem; }
+.intrusions .explain { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.95rem; }
+.intrusions .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.intrusions .chip {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.95rem;
+}
+.intrusions .none { color: var(--muted); margin: 0; }
+
+.screenshot-note {
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+/* --- Small screens ------------------------------------------------------ */
+@media (max-width: 480px) {
+  body { font-size: 17px; }
+  .app { padding: 1rem 0.9rem 2.5rem; }
+  h1 { font-size: 1.6rem; }
+  #results-table { font-size: 0.85rem; }
+  #results-table th, #results-table td { padding: 0.4rem 0.35rem; }
+}

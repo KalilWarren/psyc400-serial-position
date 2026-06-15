@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Experiment 1: The Serial Position Effect</title>
+
+  <!-- Stylesheet (relative path so it works on GitHub Pages subpaths and file://) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="app">
+
+    <!-- ===================================================================
+         WELCOME SCREEN
+         =================================================================== -->
+    <section id="welcome" class="screen">
+      <h1>Self-Experiment&nbsp;1: The Serial Position Effect</h1>
+
+      <div class="instructions">
+        <p>Welcome. This activity tests how well you remember a list of words.</p>
+        <ul>
+          <li>Words will appear on the screen <strong>one at a time</strong>. Study each
+              word as it appears.</li>
+          <li><strong>Do not write anything down</strong> while the words are showing.</li>
+          <li>After each list, you will have <strong>90&nbsp;seconds</strong> to type every
+              word you can remember. Order does not matter.</li>
+          <li>You will do this <strong>three times</strong> with three different lists.</li>
+          <li>First you'll do <strong>one quick practice trial</strong> to get used to how
+              it works, then the real experiment begins.</li>
+        </ul>
+        <p class="practice-tip">Everyone starts with a short <strong>practice
+           round</strong> so the warm-up is the same for all students. The practice
+           uses <strong>different words</strong> than the real experiment, so it won't
+           affect your results.</p>
+        <p>When you are ready, enter your name and begin the practice.</p>
+      </div>
+
+      <label class="field" for="participant">Your name</label>
+      <input type="text" id="participant" autocomplete="off"
+             placeholder="e.g. Jane O'Brien">
+
+      <button id="begin-btn" class="btn-primary">Begin practice</button>
+    </section>
+
+    <!-- ===================================================================
+         PRESENTATION SCREEN  (words shown one at a time)
+         =================================================================== -->
+    <section id="presentation" class="screen hidden">
+      <div class="word-stage">
+        <div id="word" class="word"></div>
+      </div>
+      <!-- Subtle whole-list progress bar. Deliberately does NOT show a number,
+           so it never cues the student which serial position they are on. -->
+      <div class="progress-track" aria-hidden="true">
+        <div id="progress-bar" class="progress-fill"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RECALL SCREEN  (90-second free recall, word by word)
+         =================================================================== -->
+    <section id="recall" class="screen hidden">
+      <h2>Type every word you remember</h2>
+      <p class="recall-help">Type one word and press <strong>Enter</strong>. Order does not
+        matter. Don't worry about spelling — type it the way you remember it.</p>
+
+      <div id="countdown" class="countdown" role="timer" aria-live="off">1:30</div>
+
+      <form id="recall-form" autocomplete="off">
+        <input type="text" id="recall-word" placeholder="Type a word, press Enter"
+               autocomplete="off" autocapitalize="none" spellcheck="false">
+      </form>
+
+      <p class="recall-count"><span id="recall-counter">0</span> words entered</p>
+      <ul id="recall-list" class="recall-list" aria-live="polite"></ul>
+
+      <button id="done-btn" class="btn-primary">Done</button>
+    </section>
+
+    <!-- ===================================================================
+         PRACTICE COMPLETE  (end of the optional dry run)
+         =================================================================== -->
+    <section id="practice-done" class="screen hidden">
+      <h2>Practice complete</h2>
+      <p>That's how the experiment works — words appear one at a time, then you
+         type everything you remember before the timer runs out.</p>
+      <p><strong>You're now moving on to the real trials.</strong> They begin with a
+         <strong>new set of words</strong> — this is the part that counts, so give it
+         your full attention.</p>
+      <button id="practice-done-btn" class="btn-primary">Begin the real experiment</button>
+    </section>
+
+    <!-- ===================================================================
+         INTERSTITIAL  (rest between trials)
+         =================================================================== -->
+    <section id="interstitial" class="screen hidden">
+      <h2>Nice work — take a short rest</h2>
+      <p>When you're ready, continue to the next list. The next list of words will begin
+         right after you click below.</p>
+      <button id="continue-btn" class="btn-primary">Continue</button>
+    </section>
+
+    <!-- ===================================================================
+         RESULTS SCREEN  (DATA ONLY — no interpretation by design)
+         =================================================================== -->
+    <section id="results" class="screen hidden">
+      <h2>Your Results</h2>
+
+      <div class="chart-wrap">
+        <canvas id="curve"></canvas>
+      </div>
+
+      <div class="summary" id="summary"></div>
+
+      <div class="table-wrap">
+        <table id="results-table">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>List&nbsp;A word</th>
+              <th>List&nbsp;B word</th>
+              <th>List&nbsp;C word</th>
+              <th>Recalled&nbsp;/3</th>
+              <th>Proportion</th>
+            </tr>
+          </thead>
+          <tbody><!-- filled by results.js --></tbody>
+        </table>
+      </div>
+
+      <div class="intrusions" id="intrusions"><!-- filled by results.js --></div>
+
+      <button id="download-btn" class="btn-primary">Download Excel (.xlsx)</button>
+      <p class="screenshot-note">You can also screenshot this screen for your write-up.</p>
+    </section>
+
+  </main>
+
+  <!-- External libraries, loaded from CDN (pinned versions):
+       Chart.js draws the serial position curve; SheetJS builds the .xlsx export. -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- App scripts. Load order matters: data -> scoring/results -> controller. -->
+  <script src="js/wordlists.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/experiment.js"></script>
+</body>
+</html>
