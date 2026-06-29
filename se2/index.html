@@ -53,8 +53,8 @@
         <p id="trial-question" class="prompt"></p>
       </div>
 
-      <!-- Task A: numeric answer -->
-      <form id="trial-a-form" class="hidden" autocomplete="off">
+      <!-- Task A: numeric answer (onsubmit guard prevents any page reload) -->
+      <form id="trial-a-form" class="hidden" autocomplete="off" onsubmit="return false">
         <input type="text" id="trial-a-input" class="num-input" inputmode="numeric"
                autocomplete="off" autocapitalize="none" spellcheck="false"
                maxlength="2" placeholder="#">
@@ -91,7 +91,10 @@
          starting with 30, and press Enter after each. You must enter all of them before the
          task continues.</p>
 
-      <form id="filler-form" autocomplete="off">
+      <!-- onsubmit="return false" is a safety net: it blocks the browser's default
+           form submission (which would reload the page) even if the script is missing
+           or stale. The script's submit handler still runs and processes the number. -->
+      <form id="filler-form" autocomplete="off" onsubmit="return false">
         <input type="text" id="filler-input" class="num-input" inputmode="numeric"
                autocomplete="off" spellcheck="false" maxlength="3" placeholder="#">
       </form>
