@@ -42,8 +42,10 @@
  *     overlap with REAL_POOL (these are the "new" test items).
  *   • NONFIT_FRAMES: sentences needing an abstract/emotional word (no concrete
  *     noun should fit). Keep at least 10.
- *   • PRACTICE_WORDS / PRACTICE_NONFIT: a small separate warm-up set, never
- *     reused in the real task.
+ *   • PRACTICE_WORDS / PRACTICE_NONFIT: a small separate warm-up set. Practice
+ *     words are automatically excluded from the real study set and the test
+ *     distractors at runtime, so they can never appear in the real trial even if
+ *     a list is edited to overlap.
  * Save and reload — no other file needs to change.
  * ========================================================================== */
 
@@ -166,6 +168,19 @@ function se2VowelCount(word) {
   return m ? m.length : 0;
 }
 
+/* Set of practice words (normalized) so the real task can never reuse them.
+ * This is a safety net: even if a practice word is accidentally added to
+ * REAL_POOL or DISTRACTOR_POOL when the lists are edited, it is filtered out of
+ * the real study set and the test distractors here. */
+function se2PracticeWords() {
+  var set = {};
+  PRACTICE_WORDS.forEach(function (p) { set[String(p.word).trim().toLowerCase()] = true; });
+  return set;
+}
+function se2NotPractice(word, practiceSet) {
+  return !practiceSet[String(word).trim().toLowerCase()];
+}
+
 /* Build the 40 real study trials for one session:
  *   - draw 40 words from REAL_POOL,
  *   - assign 20 to Task A and 20 to Task B (random, because the pool is shuffled),
@@ -174,7 +189,14 @@ function se2VowelCount(word) {
  * Each trial: { word, task:'A'|'B', frame:string|null, intendedFit:'yes'|'no'|null }.
  */
 function buildStudySet() {
-  var drawn = se2Shuffle(REAL_POOL).slice(0, 40);
+  // Exclude any practice words from the real pool before drawing (safety net).
+  var practice = se2PracticeWords();
+  var pool = REAL_POOL.filter(function (item) { return se2NotPractice(item.word, practice); });
+  if (pool.length < 40) {
+    console.warn('SE2: fewer than 40 real words available after removing practice ' +
+                 'words (' + pool.length + '). Add more words to REAL_POOL.');
+  }
+  var drawn = se2Shuffle(pool).slice(0, 40);
   var study = [];
   for (var i = 0; i < drawn.length; i++) {
     if (i < 20) {
@@ -206,7 +228,19 @@ function buildTestList(studySet) {
   var old = studySet.map(function (t) {
     return { word: t.word, type: 'old', task: t.task };
   });
-  var distractors = se2Shuffle(DISTRACTOR_POOL).slice(0, 40).map(function (w) {
+
+  // "New" items must not be practice words, and must not be a studied word.
+  var practice = se2PracticeWords();
+  var studied = {};
+  studySet.forEach(function (t) { studied[String(t.word).trim().toLowerCase()] = true; });
+  var pool = DISTRACTOR_POOL.filter(function (w) {
+    return se2NotPractice(w, practice) && !studied[String(w).trim().toLowerCase()];
+  });
+  if (pool.length < 40) {
+    console.warn('SE2: fewer than 40 distractors available after removing practice/' +
+                 'studied words (' + pool.length + '). Add more words to DISTRACTOR_POOL.');
+  }
+  var distractors = se2Shuffle(pool).slice(0, 40).map(function (w) {
     return { word: w, type: 'new', task: null };
   });
   return se2Shuffle(old.concat(distractors));
