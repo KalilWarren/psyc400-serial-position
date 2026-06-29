@@ -322,6 +322,14 @@ input[type="text"]:disabled {
   margin: 0 0 1.5rem;
 }
 
+/* Neutral caption above each results chart. */
+.chart-caption {
+  text-align: center;
+  font-weight: bold;
+  color: var(--ink);
+  margin: 0.75rem 0 0.25rem;
+}
+
 /* Unobtrusive link between experiments. */
 .cross-link {
   display: inline-block;

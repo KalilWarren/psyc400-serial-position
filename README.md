@@ -120,9 +120,10 @@ question. After a short counting task (typing the numbers counting down from 30,
 which must be completed to continue), there is a surprise recognition test in which
 studied words are mixed with new words and the
 participant answers **Yes** or **No** to whether each word appeared previously. The
-results screen shows the participant's own raw counts and a simple two-bar figure; it
-does not interpret them. Each word is assigned to a task at random for each
-participant, so there is no shared answer key.
+results screen shows the participant's own raw counts and two simple bar figures (one
+comparing the two tasks, and a bonus one comparing recognition within the sentence
+task for fitting vs non-fitting sentences); it does not interpret them. Each word is
+assigned to a task at random for each participant, so there is no shared answer key.
 
 - **Student URL (once deployed):** `https://kalilwarren.github.io/psyc400-serial-position/se2/`
 - **SE1 is unaffected** by SE2 (separate page and separate scripts; the shared
@@ -141,9 +142,11 @@ A single workbook (`.xlsx`) with six tabs:
    which task it was studied under (if studied), the Yes/No response (did it appear
    previously?), and whether that response was correct.
 4. **Scoring** — the on-screen summary: vowel-task words recognized /20, sentence-task
-   words recognized /20, false alarms /40.
-5. **Figure** — the two values behind the bar chart (vowel task, sentence task), so
-   the figure can be rebuilt in Excel.
+   words recognized /20, false alarms /40, plus the sentence-task breakdown for fitting
+   (Yes) vs non-fitting (No) sentences /10 each.
+5. **Figure** — the values behind both bar charts: the two-task chart (vowel vs
+   sentence) and the sentence-task breakdown (fitting vs non-fitting), so the figures
+   can be rebuilt in Excel.
 6. **Practice** — the warm-up trials and responses, kept completely separate from the
    data above.
 

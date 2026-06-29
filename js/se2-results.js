@@ -17,6 +17,7 @@ var SE2Results = (function () {
   'use strict';
 
   var chartInstance = null;
+  var chartFitInstance = null;
 
   /* Neutral display label for a task code. */
   function taskLabel(task) {
@@ -55,9 +56,32 @@ var SE2Results = (function () {
     });
     session.test.forEach(function (i) { if (i.type === 'new') newTotal += 1; });
 
+    // Within the sentence task (B), split recognition by whether the encoding
+    // sentence fit the word (intended "Yes") or did not (intended "No").
+    var studyByWord = {};
+    session.study.forEach(function (t) {
+      studyByWord[String(t.word).trim().toLowerCase()] = t;
+    });
+    var bFitTotal = 0, bNoTotal = 0, bFitRecognized = 0, bNoRecognized = 0;
+    session.study.forEach(function (t) {
+      if (t.task === 'B') {
+        if (t.intendedFit === 'yes') bFitTotal += 1;
+        else if (t.intendedFit === 'no') bNoTotal += 1;
+      }
+    });
+    session.test.forEach(function (item) {
+      if (item.type === 'old' && item.task === 'B' && item.response === 'old') {
+        var st = studyByWord[String(item.word).trim().toLowerCase()];
+        if (st && st.intendedFit === 'yes') bFitRecognized += 1;
+        else if (st && st.intendedFit === 'no') bNoRecognized += 1;
+      }
+    });
+
     return {
       aRecognized: aRecognized, bRecognized: bRecognized, falseAlarms: falseAlarms,
-      aTotal: aTotal, bTotal: bTotal, newTotal: newTotal
+      aTotal: aTotal, bTotal: bTotal, newTotal: newTotal,
+      bFitRecognized: bFitRecognized, bNoRecognized: bNoRecognized,
+      bFitTotal: bFitTotal, bNoTotal: bNoTotal
     };
   }
 
@@ -108,6 +132,49 @@ var SE2Results = (function () {
         scored.bRecognized + ' / ' + scored.bTotal + '</strong></span>' +
       '<span class="stat">New words you answered "Yes" (false alarms): <strong>' +
         scored.falseAlarms + ' / ' + scored.newTotal + '</strong></span>';
+  }
+
+  /* Bonus chart: within the sentence task, recognition for fitting (Yes) vs
+   * non-fitting (No) sentences. Neutral labels, no interpretation. */
+  function renderFitChart(scored) {
+    var canvas = document.getElementById('se2-curve-fit');
+    if (chartFitInstance) chartFitInstance.destroy();
+
+    chartFitInstance = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: ['Fitting sentence (Yes)', 'Non-fitting sentence (No)'],
+        datasets: [{
+          label: 'Answered Yes',
+          data: [scored.bFitRecognized, scored.bNoRecognized],
+          backgroundColor: '#73000A',
+          borderColor: '#73000A',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            beginAtZero: true,
+            suggestedMax: scored.bFitTotal || 10,
+            ticks: { precision: 0 },
+            title: { display: true, text: 'Words answered Yes' }
+          }
+        }
+      }
+    });
+  }
+
+  function renderSummaryFit(scored) {
+    var el = document.getElementById('se2-summary-fit');
+    el.innerHTML =
+      '<span class="stat">Fitting-sentence (Yes) words you answered "Yes" at test: <strong>' +
+        scored.bFitRecognized + ' / ' + scored.bFitTotal + '</strong></span>' +
+      '<span class="stat">Non-fitting-sentence (No) words you answered "Yes" at test: <strong>' +
+        scored.bNoRecognized + ' / ' + scored.bNoTotal + '</strong></span>';
   }
 
   /* -----------------------------------------------------------------------
@@ -169,7 +236,9 @@ var SE2Results = (function () {
       ['Measure', 'Count', 'Out of'],
       ['Vowel task words answered Yes', scored.aRecognized, scored.aTotal],
       ['Sentence task words answered Yes', scored.bRecognized, scored.bTotal],
-      ['New words answered Yes (false alarms)', scored.falseAlarms, scored.newTotal]
+      ['New words answered Yes (false alarms)', scored.falseAlarms, scored.newTotal],
+      ['Sentence task — fitting-sentence (Yes) words answered Yes', scored.bFitRecognized, scored.bFitTotal],
+      ['Sentence task — non-fitting-sentence (No) words answered Yes', scored.bNoRecognized, scored.bNoTotal]
     ];
   }
 
@@ -177,7 +246,11 @@ var SE2Results = (function () {
     return [
       ['Task', 'Answered Yes'],
       ['Vowel task', scored.aRecognized],
-      ['Sentence task', scored.bRecognized]
+      ['Sentence task', scored.bRecognized],
+      [],
+      ['Sentence task by question type', 'Answered Yes'],
+      ['Fitting sentence (Yes)', scored.bFitRecognized],
+      ['Non-fitting sentence (No)', scored.bNoRecognized]
     ];
   }
 
@@ -227,6 +300,8 @@ var SE2Results = (function () {
     var scored = score(session);
     renderChart(scored);
     renderSummary(scored);
+    renderFitChart(scored);
+    renderSummaryFit(scored);
     document.getElementById('download-btn').onclick = function () {
       downloadWorkbook(session, scored);
     };
