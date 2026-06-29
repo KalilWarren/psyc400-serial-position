@@ -15,7 +15,7 @@
 (function () {
   'use strict';
 
-  const FILLER_SECONDS = 30;
+  const COUNTDOWN_FROM = 30;   // filler: type this number down to 1 before proceeding
 
   /* --- Screens + show() --------------------------------------------------- */
   const screens = {
@@ -50,7 +50,11 @@
   const trialBChoices = document.getElementById('trial-b-choices');
   const trialProgress = document.getElementById('trial-progress');
 
-  const fillerCount = document.getElementById('filler-count');
+  const fillerForm     = document.getElementById('filler-form');
+  const fillerInput    = document.getElementById('filler-input');
+  const fillerHint     = document.getElementById('filler-hint');
+  const fillerList     = document.getElementById('filler-list');
+  const fillerProgress = document.getElementById('filler-progress');
 
   const testWord     = document.getElementById('test-word');
   const testProgress = document.getElementById('test-progress');
@@ -67,8 +71,7 @@
   let testList = [];
   let testIndex = 0;
 
-  let fillerTimerId = null;
-  let fillerDeadline = 0;
+  let fillerExpected = 0;   // the next number the participant must type
 
   /* --- beforeunload guard (protect a run in progress) -------------------- */
   let unloadGuardActive = false;
@@ -201,22 +204,39 @@
   }
 
   /* ======================================================================= *
-   *  FILLER  (30s spoken count-backward distractor; nothing typed or scored)
+   *  FILLER  (typed count-down; gated on completion; nothing stored or scored)
    * ======================================================================= */
   function startFiller() {
+    fillerExpected = COUNTDOWN_FROM;
+    fillerList.innerHTML = '';
+    fillerHint.textContent = '';
+    fillerInput.value = '';
+    fillerProgress.style.width = '0%';
     show('filler');
-    fillerDeadline = performance.now() + FILLER_SECONDS * 1000;
-    updateFiller();
-    fillerTimerId = setInterval(updateFiller, 250);
+    fillerInput.focus();
   }
-  function updateFiller() {
-    var remMs = Math.max(0, fillerDeadline - performance.now());
-    var rem = Math.ceil(remMs / 1000);
-    fillerCount.textContent = rem;          // big number to count along with, out loud
-    if (remMs <= 0) endFiller();
-  }
+  // The participant must type the full descending sequence (COUNTDOWN_FROM .. 1).
+  // A correct next number advances the sequence; anything else is rejected with a
+  // hint. The test only begins once every number has been entered.
+  fillerForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (currentScreen !== 'filler') return;
+    var n = parseInt(fillerInput.value.trim(), 10);
+    fillerInput.value = '';
+    if (n === fillerExpected) {
+      var li = document.createElement('li');
+      li.textContent = n;
+      fillerList.appendChild(li);
+      fillerExpected -= 1;
+      fillerProgress.style.width =
+        (((COUNTDOWN_FROM - fillerExpected) / COUNTDOWN_FROM) * 100) + '%';
+      fillerHint.textContent = '';
+      if (fillerExpected < 1) endFiller();      // reached 1 -> sequence complete
+    } else {
+      fillerHint.textContent = 'Enter ' + fillerExpected + ' next.';
+    }
+  });
   function endFiller() {
-    if (fillerTimerId !== null) { clearInterval(fillerTimerId); fillerTimerId = null; }
     show('testIntro');
   }
 

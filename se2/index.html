@@ -83,15 +83,25 @@
     </section>
 
     <!-- ===================================================================
-         FILLER  (30-second distractor; no memory content)
+         FILLER  (typed count-down; must be completed to proceed; not scored)
          =================================================================== -->
     <section id="filler" class="screen hidden">
       <h2>Counting task</h2>
-      <p>Out loud, count backwards from <strong>30</strong> down to zero, in time with the
-         number below. Please say the numbers aloud and do not write anything down.</p>
+      <p>Count down from <strong>30</strong> to <strong>1</strong>. Type each number in order,
+         starting with 30, and press Enter after each. You must enter all of them before the
+         task continues.</p>
 
-      <div id="filler-count" class="word-medium">30</div>
-      <p class="prompt">seconds remaining</p>
+      <form id="filler-form" autocomplete="off">
+        <input type="text" id="filler-input" class="num-input" inputmode="numeric"
+               autocomplete="off" spellcheck="false" maxlength="3" placeholder="#">
+      </form>
+      <p id="filler-hint" class="recall-help" aria-live="polite"></p>
+
+      <ul id="filler-list" class="recall-list" aria-live="polite"></ul>
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="filler-progress" class="progress-fill"></div>
+      </div>
     </section>
 
     <!-- ===================================================================

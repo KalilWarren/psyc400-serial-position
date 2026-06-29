@@ -116,8 +116,9 @@ only, Chart.js + SheetJS from a CDN, all data in browser memory).
 
 In SE2 the participant sees a series of words. Each word appears with one of two
 quick questions: a **vowel-counting** question, or a **does-this-word-fit-the-sentence**
-question. After a short spoken counting task (counting backwards out loud), there is
-a surprise recognition test in which studied words are mixed with new words and the
+question. After a short counting task (typing the numbers counting down from 30,
+which must be completed to continue), there is a surprise recognition test in which
+studied words are mixed with new words and the
 participant answers **Yes** or **No** to whether each word appeared previously. The
 results screen shows the participant's own raw counts and a simple two-bar figure; it
 does not interpret them. Each word is assigned to a task at random for each
@@ -157,7 +158,8 @@ Definitions: a **hit** is a studied word correctly answered "Yes" (appeared); a
 3. For each word, answer the question shown: type the **number of vowels** and press
    Enter, or choose **Yes / No** for whether the word fits the sentence. Answer as
    quickly and accurately as you can.
-4. Do the brief **counting task** when it appears (count backwards out loud).
+4. Do the brief **counting task** when it appears (type the numbers counting down
+   from 30; you must enter them all to continue).
 5. Then answer **Yes** or **No** for whether each word appeared previously.
 6. On the results screen, press **Download data (.xlsx)** and/or take a **screenshot**
    for your report.
