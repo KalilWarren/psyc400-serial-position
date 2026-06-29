@@ -1,3 +1,26 @@
+# PSYC 400 Self-Experiments
+
+Two independent, client-side memory experiments for PSYC 400, deployed together
+via GitHub Pages. Each has its own URL so they can be assigned separately.
+
+**Live links (share with students):**
+
+- **Self-Experiment 1 — Serial Position Effect:**
+  https://kalilwarren.github.io/psyc400-serial-position/
+- **Self-Experiment 2 — Word Memory:**
+  https://kalilwarren.github.io/psyc400-serial-position/se2/
+
+Both run entirely in the browser: **no server, no build step, no database.** The
+only external libraries are [Chart.js](https://www.chartjs.org/) (charts) and
+[SheetJS](https://sheetjs.com/) (Excel export), loaded from a CDN, so an internet
+connection is required. All data stays in the browser's memory and is gone on
+reload, except for the Excel file a student chooses to download.
+
+> ⚠️ **The published site is public.** Anyone with a link can open it. A student's
+> name is included only in the Excel file they download; it is never sent anywhere.
+
+---
+
 # Self-Experiment 1: The Serial Position Effect
 
 A single-page, client-side website for a serial-position free-recall memory
@@ -11,18 +34,6 @@ is also **required to complete a short practice round first** (so any practice
 effect is the same for everyone). The practice uses a completely separate set of
 words — never the real stimuli — and its data is kept on its own tab in the
 export, apart from the real trials, the chart, and the scoring.
-
-Everything runs in the browser. There is **no server, no build step, and no
-database** — the only external libraries are
-[Chart.js](https://www.chartjs.org/) (draws the curve) and
-[SheetJS](https://sheetjs.com/) (builds the Excel file), both loaded from a CDN.
-All data stays in the browser's memory and is gone when the page is reloaded,
-except for whatever the student downloads.
-
-> ⚠️ **The published site is public.** Anyone with the link can open it. Do not
-> put confidential information on the page, and tell students that their name is
-> included in the Excel file they download (it is **not** sent anywhere — it
-> stays on their own device).
 
 ### What's in the downloaded Excel file
 
@@ -48,28 +59,38 @@ word, or a list word spelled differently enough that it didn't match exactly.
 
 ## For the instructor — deploying with GitHub Pages
 
-1. Create a new GitHub repository (e.g. `serial-position`) and upload these
-   files, keeping the folder structure:
+This project is **already deployed** at the live links above. Both experiments
+ship from this one repository, with this structure:
 
-   ```
-   index.html
-   css/style.css
-   js/wordlists.js
-   js/experiment.js
-   js/results.js
-   README.md
-   ```
+```
+index.html            ← SE1 page
+se2/index.html        ← SE2 page
+css/style.css         ← shared stylesheet
+js/wordlists.js       ← SE1 stimuli
+js/experiment.js      ← SE1 flow
+js/results.js         ← SE1 scoring + Excel export
+js/se2-stimuli.js     ← SE2 stimuli
+js/se2-experiment.js  ← SE2 flow
+js/se2-results.js     ← SE2 scoring + Excel export
+README.md
+```
 
+To deploy a fresh copy (e.g. in a forked repository):
+
+1. Push these files to a GitHub repository, keeping the folder structure above.
 2. In the repository, go to **Settings → Pages**.
 3. Under **Build and deployment → Source**, choose **Deploy from a branch**.
 4. Select the `main` branch and the `/ (root)` folder, then click **Save**.
-5. Wait ~1 minute. GitHub will show a public URL like
-   `https://<your-username>.github.io/serial-position/`.
-6. Open that URL to confirm it works, then share the link with students.
+5. Wait ~1 minute. GitHub shows a public URL like
+   `https://<your-username>.github.io/<repo-name>/` (SE2 is at that URL + `/se2/`).
+6. Open the URL to confirm it works, then share the links with students.
 
-The site also works if you just open `index.html` directly from your computer
-(double-click it) — useful for testing without deploying. An internet connection
-is required either way, because the chart library loads from a CDN.
+To update the live site, just edit the files and push to `main`; GitHub Pages
+rebuilds automatically within a minute or two.
+
+The pages also work if you open `index.html` (or `se2/index.html`) directly from
+your computer — useful for testing. An internet connection is required either
+way, because the libraries load from a CDN.
 
 ### Changing the words
 
@@ -125,7 +146,7 @@ comparing the two tasks, and a bonus one comparing recognition within the senten
 task for fitting vs non-fitting sentences); it does not interpret them. Each word is
 assigned to a task at random for each participant, so there is no shared answer key.
 
-- **Student URL (once deployed):** `https://kalilwarren.github.io/psyc400-serial-position/se2/`
+- **Student URL:** https://kalilwarren.github.io/psyc400-serial-position/se2/
 - **SE1 is unaffected** by SE2 (separate page and separate scripts; the shared
   stylesheet only gained new rules).
 
@@ -180,7 +201,10 @@ All SE2 stimuli live in **`js/se2-stimuli.js`** (the only file to edit):
   overlap `REAL_POOL`.
 - **`NONFIT_FRAMES`** — sentences that require an abstract word, so no concrete noun
   fits them. These create the "No" trials.
-- **`PRACTICE_WORDS` / `PRACTICE_NONFIT`** — the separate warm-up set.
+- **`PRACTICE_WORDS` / `PRACTICE_NONFIT`** — the separate warm-up set. Practice
+  words are automatically removed from the real study draw and the test
+  distractors at runtime, so they can never appear in the real trial even if a
+  list is edited so they overlap.
 
 **Balancing the sentence task:** of the 20 words assigned to the sentence task each
 session, 10 are shown in their own *fitting* frame (correct answer "Yes") and 10 in a
