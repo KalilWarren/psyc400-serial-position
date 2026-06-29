@@ -105,3 +105,87 @@ file needs to change.
 
 The results screen shows your data only — the chart and the numbers. Figuring
 out what the curve *means* is your job for the assignment.
+
+---
+
+# Self-Experiment 2: Word Memory
+
+A second, independent experiment that lives in the same repository as a separate
+page with its own URL. It is built the same way as Self-Experiment 1 (client-side
+only, Chart.js + SheetJS from a CDN, all data in browser memory).
+
+In SE2 the participant sees a series of words. Each word appears with one of two
+quick questions: a **vowel-counting** question, or a **does-this-word-fit-the-sentence**
+question. After a short number task, there is a surprise recognition test in which
+studied words are mixed with new words and the participant marks each one **Old**
+or **New**. The results screen shows the participant's own raw counts and a simple
+two-bar figure; it does not interpret them. Each word is assigned to a task at
+random for each participant, so there is no shared answer key.
+
+- **Student URL (once deployed):** `https://kalilwarren.github.io/psyc400-serial-position/se2/`
+- **SE1 is unaffected** by SE2 (separate page and separate scripts; the shared
+  stylesheet only gained new rules).
+
+### What's in the downloaded Excel file (SE2)
+
+A single workbook (`.xlsx`) with six tabs:
+
+1. **Metadata** — participant name, app version, and date+time logs (session start;
+   when the study and test phases opened and closed), plus definitions of *hit* and
+   *false alarm*.
+2. **Study** — every study trial in order: word, task (vowel / sentence), the
+   orienting question, the response, and response time.
+3. **Test** — every recognition item in order: word, whether it was studied or new,
+   which task it was studied under (if studied), the Old/New response, and whether
+   that response was correct.
+4. **Scoring** — the on-screen summary: vowel-task words recognized /20, sentence-task
+   words recognized /20, false alarms /40.
+5. **Figure** — the two values behind the bar chart (vowel task, sentence task), so
+   the figure can be rebuilt in Excel.
+6. **Practice** — the warm-up trials and responses, kept completely separate from the
+   data above.
+
+Definitions: a **hit** is a studied word correctly called "Old"; a **false alarm** is
+a new word incorrectly called "Old."
+
+### For students — what you do (SE2)
+
+1. Open the SE2 link (phone or computer both work).
+2. Read the instructions, type your **name**, and press **Begin practice round**.
+   Everyone does a short practice first; it uses different words and does not count.
+3. For each word, answer the question shown: type the **number of vowels** and press
+   Enter, or choose **Yes / No** for whether the word fits the sentence. Answer as
+   quickly and accurately as you can.
+4. Do the brief **number task** when it appears.
+5. Then mark each word **Old** (you saw it earlier) or **New** (you did not).
+6. On the results screen, press **Download data (.xlsx)** and/or take a **screenshot**
+   for your report.
+
+The results screen shows your data only. Figuring out what the numbers mean is your
+job for the assignment.
+
+### Changing the words (SE2)
+
+All SE2 stimuli live in **`js/se2-stimuli.js`** (the only file to edit):
+
+- **`REAL_POOL`** — studied words, each paired with a sentence frame the word fits.
+  The app draws 40 per session (20 per task). Keep at least 40.
+- **`DISTRACTOR_POOL`** — "new" words for the test; keep at least 40 and do **not**
+  overlap `REAL_POOL`.
+- **`NONFIT_FRAMES`** — sentences that require an abstract word, so no concrete noun
+  fits them. These create the "No" trials.
+- **`PRACTICE_WORDS` / `PRACTICE_NONFIT`** — the separate warm-up set.
+
+**Balancing the sentence task:** of the 20 words assigned to the sentence task each
+session, 10 are shown in their own *fitting* frame (correct answer "Yes") and 10 in a
+random *non-fitting* frame (correct answer "No"). Because the non-fitting frames need
+an abstract word that no concrete noun satisfies, the "No" trials stay reliable no
+matter which words land in the sentence task. The comments at the top of the file
+explain this in detail.
+
+### Deploying SE2
+
+SE2 is already part of this repository at `se2/index.html`, so the same GitHub Pages
+deployment that serves SE1 also serves SE2 — no extra setup. After pushing, SE2 is
+reachable at the subpath URL above. You can hand students the SE1 and SE2 links
+separately.

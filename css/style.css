@@ -239,3 +239,93 @@ input[type="text"]:disabled {
   #results-table { font-size: 0.85rem; }
   #results-table th, #results-table td { padding: 0.4rem 0.35rem; }
 }
+
+/* ============================================================================
+ * Self-Experiment 2 — ADDITIVE rules only (new class names).
+ * These are not used by SE1 and do not alter any SE1 rule above.
+ * ========================================================================== */
+
+/* Centered stage for the single word / sentence on trial and test screens. */
+.se2-stage {
+  text-align: center;
+  padding: 1.5rem 0 0.5rem;
+}
+
+/* A word shown with a question/buttons below it (smaller than the SE1 .word). */
+.word-medium {
+  font-size: clamp(2rem, 9vw, 3.4rem);
+  font-weight: bold;
+  text-align: center;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  min-height: 1.2em;
+}
+
+/* The orienting question / prompt line. */
+.prompt {
+  font-size: 1.15rem;
+  text-align: center;
+  color: var(--ink);
+  margin: 1rem 0 1.25rem;
+}
+
+/* Sentence frame (Task B), with a highlighted blank. */
+.frame {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  text-align: center;
+  background: var(--bg-soft);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0 0.5rem;
+}
+.frame .blank { color: var(--garnet); font-weight: bold; letter-spacing: 0.05em; }
+
+/* Narrow, centered numeric input (vowel count / filler). */
+.num-input {
+  width: 140px !important;
+  text-align: center;
+  margin: 0 auto 1rem !important;
+  display: block;
+}
+
+/* Two large side-by-side choice buttons (Yes/No, Old/New). */
+.choice-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+}
+.btn-choice {
+  flex: 1;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--garnet);
+  background: #fff;
+  border: 2px solid var(--garnet);
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 64px;
+  cursor: pointer;
+}
+.btn-choice small { font-weight: normal; color: var(--muted); }
+.btn-choice:hover { background: var(--bg-soft); }
+.btn-choice:focus { outline: 3px solid var(--garnet); outline-offset: 2px; }
+.btn-choice:active { transform: translateY(1px); }
+
+/* Data-only note on the results screen. */
+.data-note {
+  color: var(--muted);
+  background: var(--bg-soft);
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin: 0 0 1.5rem;
+}
+
+/* Unobtrusive link between experiments. */
+.cross-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--garnet);
+  font-size: 0.95rem;
+}

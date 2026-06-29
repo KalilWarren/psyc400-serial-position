@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Experiment 2: Word Memory</title>
+
+  <!-- Shared stylesheet, one level up (works on GitHub Pages subpaths). -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <main class="app">
+
+    <!-- ===================================================================
+         WELCOME  (incidental framing — must NOT mention the later test)
+         =================================================================== -->
+    <section id="welcome" class="screen">
+      <h1>Self-Experiment&nbsp;2: Word Memory</h1>
+
+      <div class="instructions">
+        <p>In this task you will see a series of words. For each word you will answer a
+           short question about it.</p>
+        <ul>
+          <li>Some words appear with the question <strong>"How many vowels are in this
+              word?"</strong> Type the number and press Enter.</li>
+          <li>Other words appear inside a sentence with a blank, with the question
+              <strong>"Does this word fit in the sentence?"</strong> Choose Yes or No.</li>
+          <li>Work as <strong>quickly and accurately</strong> as you can. Answer each
+              question based on your first judgement.</li>
+        </ul>
+        <p class="practice-tip">All participants begin with a short practice round using
+           different words. The practice does not count toward your results.</p>
+        <p>Enter your name below to begin the practice round.</p>
+      </div>
+
+      <label class="field" for="participant">Your name</label>
+      <input type="text" id="participant" autocomplete="off"
+             placeholder="e.g. Jane O'Brien">
+
+      <button id="begin-btn" class="btn-primary">Begin practice round</button>
+
+      <p><a class="cross-link" href="../">&larr; Back to Self-Experiment&nbsp;1</a></p>
+    </section>
+
+    <!-- ===================================================================
+         TRIAL  (reused for practice + real study; content set per task)
+         =================================================================== -->
+    <section id="trial" class="screen hidden">
+      <div class="se2-stage">
+        <div id="trial-word" class="word-medium"></div>
+        <div id="trial-frame" class="frame hidden"></div>
+        <p id="trial-question" class="prompt"></p>
+      </div>
+
+      <!-- Task A: numeric answer -->
+      <form id="trial-a-form" class="hidden" autocomplete="off">
+        <input type="text" id="trial-a-input" class="num-input" inputmode="numeric"
+               autocomplete="off" autocapitalize="none" spellcheck="false"
+               maxlength="2" placeholder="#">
+        <button type="submit" class="btn-primary">Enter</button>
+      </form>
+
+      <!-- Task B: Yes / No -->
+      <div id="trial-b-choices" class="choice-row hidden">
+        <button class="btn-choice" data-answer="yes">Yes <small>(Y)</small></button>
+        <button class="btn-choice" data-answer="no">No <small>(N)</small></button>
+      </div>
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="trial-progress" class="progress-fill"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         PRACTICE COMPLETE  (no spoiler about the upcoming test)
+         =================================================================== -->
+    <section id="practice-done" class="screen hidden">
+      <h2>Practice round complete</h2>
+      <p>You have finished the practice round. The task will now continue with a new set
+         of words. Please answer each question as quickly and accurately as you can.</p>
+      <button id="practice-done-btn" class="btn-primary">Continue</button>
+    </section>
+
+    <!-- ===================================================================
+         FILLER  (30-second distractor; no memory content)
+         =================================================================== -->
+    <section id="filler" class="screen hidden">
+      <h2>Quick number task</h2>
+      <p>Starting from the number below, keep subtracting <strong>3</strong> and type each
+         answer, pressing Enter after each. Continue until the time runs out.</p>
+
+      <div id="filler-start" class="word-medium"></div>
+      <div id="filler-countdown" class="countdown" role="timer" aria-live="off">0:30</div>
+
+      <form id="filler-form" autocomplete="off">
+        <input type="text" id="filler-input" class="num-input" inputmode="numeric"
+               autocomplete="off" spellcheck="false" placeholder="#">
+      </form>
+      <p class="recall-count"><span id="filler-list" aria-live="polite"></span></p>
+    </section>
+
+    <!-- ===================================================================
+         TEST INTRO  (the surprise is revealed only here)
+         =================================================================== -->
+    <section id="test-intro" class="screen hidden">
+      <h2>Memory test</h2>
+      <p>Now your memory for the words will be tested. You will see one word at a time.
+         Some words appeared earlier in the task and some are new.</p>
+      <p>For each word, choose <strong>Old</strong> if you saw it earlier in this session,
+         or <strong>New</strong> if you did not.</p>
+      <button id="test-intro-btn" class="btn-primary">Begin the memory test</button>
+    </section>
+
+    <!-- ===================================================================
+         TEST  (recognition: Old / New)
+         =================================================================== -->
+    <section id="test" class="screen hidden">
+      <div class="se2-stage">
+        <div id="test-word" class="word-medium"></div>
+        <p class="prompt">Did this word appear earlier?</p>
+      </div>
+
+      <div id="test-choices" class="choice-row">
+        <button class="btn-choice" data-answer="old">Old <small>(O)</small></button>
+        <button class="btn-choice" data-answer="new">New <small>(N)</small></button>
+      </div>
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="test-progress" class="progress-fill"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RESULTS  (DATA ONLY — neutral task names, no interpretation)
+         =================================================================== -->
+    <section id="results" class="screen hidden">
+      <h2>Results</h2>
+
+      <div class="chart-wrap">
+        <canvas id="se2-curve"></canvas>
+      </div>
+
+      <div class="summary" id="se2-summary"></div>
+
+      <p class="data-note">This screen shows your data only. Figuring out what these
+         numbers mean is your job for the assignment.</p>
+
+      <button id="download-btn" class="btn-primary">Download data (.xlsx)</button>
+      <p class="screenshot-note">You may also take a screenshot of this screen for your report.</p>
+    </section>
+
+  </main>
+
+  <!-- External libraries (same pinned CDN versions as Self-Experiment 1). -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- App scripts (one level up). Order: stimuli -> results -> controller. -->
+  <script src="../js/se2-stimuli.js"></script>
+  <script src="../js/se2-results.js"></script>
+  <script src="../js/se2-experiment.js"></script>
+</body>
+</html>
