@@ -8,8 +8,9 @@
  * student interprets the numbers in their written report.
  *
  * Definitions (used in scoring and the export):
- *   hit         = a studied word correctly called "Old".
- *   false alarm = a new (distractor) word incorrectly called "Old".
+ *   hit         = a studied word correctly answered "Yes" (appeared previously).
+ *   false alarm = a new (distractor) word incorrectly answered "Yes".
+ * Internally a "Yes" response is stored as 'old' and a "No" as 'new'.
  * ========================================================================== */
 
 var SE2Results = (function () {
@@ -72,7 +73,7 @@ var SE2Results = (function () {
       data: {
         labels: ['Vowel task', 'Sentence task'],
         datasets: [{
-          label: 'Recognized as Old',
+          label: 'Answered Yes',
           data: [scored.aRecognized, scored.bRecognized],
           backgroundColor: '#73000A',
           borderColor: '#73000A',
@@ -88,7 +89,7 @@ var SE2Results = (function () {
             beginAtZero: true,
             suggestedMax: scored.aTotal || 20,
             ticks: { precision: 0 },
-            title: { display: true, text: 'Words recognized as Old' }
+            title: { display: true, text: 'Words answered Yes' }
           }
         }
       }
@@ -101,11 +102,11 @@ var SE2Results = (function () {
   function renderSummary(scored) {
     var el = document.getElementById('se2-summary');
     el.innerHTML =
-      '<span class="stat">Words from the vowel task recognized as Old: <strong>' +
+      '<span class="stat">Vowel-task words you answered "Yes": <strong>' +
         scored.aRecognized + ' / ' + scored.aTotal + '</strong></span>' +
-      '<span class="stat">Words from the sentence task recognized as Old: <strong>' +
+      '<span class="stat">Sentence-task words you answered "Yes": <strong>' +
         scored.bRecognized + ' / ' + scored.bTotal + '</strong></span>' +
-      '<span class="stat">New words called Old (false alarms): <strong>' +
+      '<span class="stat">New words you answered "Yes" (false alarms): <strong>' +
         scored.falseAlarms + ' / ' + scored.newTotal + '</strong></span>';
   }
 
@@ -126,8 +127,8 @@ var SE2Results = (function () {
     rows.push(['Test phase closed', session.testEndISO, localDateTime(session.testEndISO)]);
     rows.push([]);
     rows.push(['Definitions']);
-    rows.push(['hit', 'a studied word correctly answered "Old" at test']);
-    rows.push(['false alarm', 'a new (distractor) word incorrectly answered "Old" at test']);
+    rows.push(['hit', 'a studied word correctly answered "Yes" (appeared) at test']);
+    rows.push(['false alarm', 'a new (distractor) word incorrectly answered "Yes" at test']);
     rows.push([]);
     rows.push(['Note: Each word was assigned to a task (vowel or sentence) at random for ' +
                'this participant, so the assignment differs between participants.']);
@@ -150,12 +151,13 @@ var SE2Results = (function () {
   }
 
   function testSheet(session) {
-    var rows = [['Order', 'Word', 'Item type', 'Studied under task', 'Response',
-                 'Correct', 'Response time (ms)', 'Shown at (ISO)', 'Shown at (local)']];
+    var rows = [['Order', 'Word', 'Item type', 'Studied under task',
+                 'Response (appeared previously?)', 'Correct', 'Response time (ms)',
+                 'Shown at (ISO)', 'Shown at (local)']];
     session.test.forEach(function (i) {
       rows.push([i.order, i.word, i.type === 'old' ? 'studied' : 'new',
                  i.task ? taskLabel(i.task) : '',
-                 i.response === 'old' ? 'Old' : 'New',
+                 i.response === 'old' ? 'Yes' : 'No',
                  i.correct ? 'TRUE' : 'FALSE', i.rtMs,
                  i.shownAtISO, localDateTime(i.shownAtISO)]);
     });
@@ -165,15 +167,15 @@ var SE2Results = (function () {
   function scoringSheet(scored) {
     return [
       ['Measure', 'Count', 'Out of'],
-      ['Vowel task words recognized as Old', scored.aRecognized, scored.aTotal],
-      ['Sentence task words recognized as Old', scored.bRecognized, scored.bTotal],
-      ['New words called Old (false alarms)', scored.falseAlarms, scored.newTotal]
+      ['Vowel task words answered Yes', scored.aRecognized, scored.aTotal],
+      ['Sentence task words answered Yes', scored.bRecognized, scored.bTotal],
+      ['New words answered Yes (false alarms)', scored.falseAlarms, scored.newTotal]
     ];
   }
 
   function figureSheet(scored) {
     return [
-      ['Task', 'Recognized as Old'],
+      ['Task', 'Answered Yes'],
       ['Vowel task', scored.aRecognized],
       ['Sentence task', scored.bRecognized]
     ];

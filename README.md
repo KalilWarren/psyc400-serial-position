@@ -116,11 +116,12 @@ only, Chart.js + SheetJS from a CDN, all data in browser memory).
 
 In SE2 the participant sees a series of words. Each word appears with one of two
 quick questions: a **vowel-counting** question, or a **does-this-word-fit-the-sentence**
-question. After a short number task, there is a surprise recognition test in which
-studied words are mixed with new words and the participant marks each one **Old**
-or **New**. The results screen shows the participant's own raw counts and a simple
-two-bar figure; it does not interpret them. Each word is assigned to a task at
-random for each participant, so there is no shared answer key.
+question. After a short spoken counting task (counting backwards out loud), there is
+a surprise recognition test in which studied words are mixed with new words and the
+participant answers **Yes** or **No** to whether each word appeared previously. The
+results screen shows the participant's own raw counts and a simple two-bar figure; it
+does not interpret them. Each word is assigned to a task at random for each
+participant, so there is no shared answer key.
 
 - **Student URL (once deployed):** `https://kalilwarren.github.io/psyc400-serial-position/se2/`
 - **SE1 is unaffected** by SE2 (separate page and separate scripts; the shared
@@ -136,8 +137,8 @@ A single workbook (`.xlsx`) with six tabs:
 2. **Study** — every study trial in order: word, task (vowel / sentence), the
    orienting question, the response, and response time.
 3. **Test** — every recognition item in order: word, whether it was studied or new,
-   which task it was studied under (if studied), the Old/New response, and whether
-   that response was correct.
+   which task it was studied under (if studied), the Yes/No response (did it appear
+   previously?), and whether that response was correct.
 4. **Scoring** — the on-screen summary: vowel-task words recognized /20, sentence-task
    words recognized /20, false alarms /40.
 5. **Figure** — the two values behind the bar chart (vowel task, sentence task), so
@@ -145,8 +146,8 @@ A single workbook (`.xlsx`) with six tabs:
 6. **Practice** — the warm-up trials and responses, kept completely separate from the
    data above.
 
-Definitions: a **hit** is a studied word correctly called "Old"; a **false alarm** is
-a new word incorrectly called "Old."
+Definitions: a **hit** is a studied word correctly answered "Yes" (appeared); a
+**false alarm** is a new word incorrectly answered "Yes."
 
 ### For students — what you do (SE2)
 
@@ -156,8 +157,8 @@ a new word incorrectly called "Old."
 3. For each word, answer the question shown: type the **number of vowels** and press
    Enter, or choose **Yes / No** for whether the word fits the sentence. Answer as
    quickly and accurately as you can.
-4. Do the brief **number task** when it appears.
-5. Then mark each word **Old** (you saw it earlier) or **New** (you did not).
+4. Do the brief **counting task** when it appears (count backwards out loud).
+5. Then answer **Yes** or **No** for whether each word appeared previously.
 6. On the results screen, press **Download data (.xlsx)** and/or take a **screenshot**
    for your report.
 

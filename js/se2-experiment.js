@@ -50,11 +50,7 @@
   const trialBChoices = document.getElementById('trial-b-choices');
   const trialProgress = document.getElementById('trial-progress');
 
-  const fillerStart     = document.getElementById('filler-start');
-  const fillerCountdown = document.getElementById('filler-countdown');
-  const fillerForm      = document.getElementById('filler-form');
-  const fillerInput     = document.getElementById('filler-input');
-  const fillerList      = document.getElementById('filler-list');
+  const fillerCount = document.getElementById('filler-count');
 
   const testWord     = document.getElementById('test-word');
   const testProgress = document.getElementById('test-progress');
@@ -205,16 +201,10 @@
   }
 
   /* ======================================================================= *
-   *  FILLER  (30s count-backward-by-3; not scored)
+   *  FILLER  (30s spoken count-backward distractor; nothing typed or scored)
    * ======================================================================= */
   function startFiller() {
-    var startNum = 300 + Math.floor(Math.random() * 600);   // 300..899
-    fillerStart.textContent = startNum;
-    fillerInput.value = '';
-    fillerList.textContent = '';
     show('filler');
-    fillerInput.focus();
-
     fillerDeadline = performance.now() + FILLER_SECONDS * 1000;
     updateFiller();
     fillerTimerId = setInterval(updateFiller, 250);
@@ -222,22 +212,13 @@
   function updateFiller() {
     var remMs = Math.max(0, fillerDeadline - performance.now());
     var rem = Math.ceil(remMs / 1000);
-    fillerCountdown.textContent = '0:' + (rem < 10 ? '0' + rem : rem);
-    fillerCountdown.classList.toggle('low', rem <= 5);
+    fillerCount.textContent = rem;          // big number to count along with, out loud
     if (remMs <= 0) endFiller();
   }
   function endFiller() {
     if (fillerTimerId !== null) { clearInterval(fillerTimerId); fillerTimerId = null; }
     show('testIntro');
   }
-  // Accept filler entries for engagement; they are not stored or scored.
-  fillerForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = fillerInput.value.trim();
-    if (v === '') return;
-    fillerList.textContent = (fillerList.textContent ? fillerList.textContent + ', ' : '') + v;
-    fillerInput.value = '';
-  });
 
   /* ======================================================================= *
    *  RECOGNITION TEST  (surprise; Old / New per item)
@@ -301,8 +282,8 @@
       if (e.key === 'y' || e.key === 'Y') answerB('yes');
       else if (e.key === 'n' || e.key === 'N') answerB('no');
     } else if (currentScreen === 'test') {
-      if (e.key === 'o' || e.key === 'O') answerTest('old');
-      else if (e.key === 'n' || e.key === 'N') answerTest('new');
+      if (e.key === 'y' || e.key === 'Y') answerTest('old');        // Yes = appeared
+      else if (e.key === 'n' || e.key === 'N') answerTest('new');   // No = did not appear
     }
   });
 

@@ -86,18 +86,12 @@
          FILLER  (30-second distractor; no memory content)
          =================================================================== -->
     <section id="filler" class="screen hidden">
-      <h2>Quick number task</h2>
-      <p>Starting from the number below, keep subtracting <strong>3</strong> and type each
-         answer, pressing Enter after each. Continue until the time runs out.</p>
+      <h2>Counting task</h2>
+      <p>Out loud, count backwards from <strong>30</strong> down to zero, in time with the
+         number below. Please say the numbers aloud and do not write anything down.</p>
 
-      <div id="filler-start" class="word-medium"></div>
-      <div id="filler-countdown" class="countdown" role="timer" aria-live="off">0:30</div>
-
-      <form id="filler-form" autocomplete="off">
-        <input type="text" id="filler-input" class="num-input" inputmode="numeric"
-               autocomplete="off" spellcheck="false" placeholder="#">
-      </form>
-      <p class="recall-count"><span id="filler-list" aria-live="polite"></span></p>
+      <div id="filler-count" class="word-medium">30</div>
+      <p class="prompt">seconds remaining</p>
     </section>
 
     <!-- ===================================================================
@@ -106,24 +100,25 @@
     <section id="test-intro" class="screen hidden">
       <h2>Memory test</h2>
       <p>Now your memory for the words will be tested. You will see one word at a time.
-         Some words appeared earlier in the task and some are new.</p>
-      <p>For each word, choose <strong>Old</strong> if you saw it earlier in this session,
-         or <strong>New</strong> if you did not.</p>
+         Some words appeared earlier in the task and some did not.</p>
+      <p>For each word, choose <strong>Yes</strong> if the word appeared previously in this
+         session, or <strong>No</strong> if it did not.</p>
       <button id="test-intro-btn" class="btn-primary">Begin the memory test</button>
     </section>
 
     <!-- ===================================================================
-         TEST  (recognition: Old / New)
+         TEST  (recognition: did this word appear previously? Yes / No)
          =================================================================== -->
     <section id="test" class="screen hidden">
       <div class="se2-stage">
         <div id="test-word" class="word-medium"></div>
-        <p class="prompt">Did this word appear earlier?</p>
+        <p class="prompt">Did this word appear previously?</p>
       </div>
 
+      <!-- data-answer keeps the internal meaning: "old" = appeared, "new" = did not. -->
       <div id="test-choices" class="choice-row">
-        <button class="btn-choice" data-answer="old">Old <small>(O)</small></button>
-        <button class="btn-choice" data-answer="new">New <small>(N)</small></button>
+        <button class="btn-choice" data-answer="old">Yes <small>(Y)</small></button>
+        <button class="btn-choice" data-answer="new">No <small>(N)</small></button>
       </div>
 
       <div class="progress-track" aria-hidden="true">
